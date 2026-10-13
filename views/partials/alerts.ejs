@@ -1,0 +1,11 @@
+<% if (typeof error_msg !== 'undefined' && error_msg) { %>
+    <div style="background-color: #fee2e2; border: 1px solid #f87171; color: #991b1b; padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0;">
+        ⚠️ <%= error_msg %>
+    </div>
+<% } %>
+
+<% if (typeof success_msg !== 'undefined' && success_msg) { %>
+    <div style="background-color: #d1fae5; border: 1px solid #34d399; color: #065f46; padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0;">
+        ✅ <%= success_msg %>
+    </div>
+<% } %>

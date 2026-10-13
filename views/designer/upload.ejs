@@ -1,0 +1,34 @@
+<%- include('../partials/header') %>
+
+<div style="max-width: 600px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #ddd;">
+    <h2>Yangi SVG yuklash</h2>
+    <form action="/designer/upload" method="POST" enctype="multipart/form-data">
+        <div style="margin-bottom: 1rem;">
+            <label>Mahsulot nomi:</label><br>
+            <input type="text" name="title" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <label>Kategoriya:</label><br>
+            <select name="category_id" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+                <!-- Kategoriyalar bazadan dynamic keladi -->
+                <option value="1">Icons</option>
+                <option value="2">Illustrations</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <label>Narxi ($):</label><br>
+            <input type="number" step="0.01" name="price" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <label>Prevyu uchun SVG fayl:</label><br>
+            <input type="file" name="preview_svg" accept=".svg" required style="margin-top: 0.25rem;">
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <label>Asl nusxa (ZIP arxiv):</label><br>
+            <input type="file" name="file_zip" accept=".zip" required style="margin-top: 0.25rem;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Saqlash va Moderatsiyaga yuborish</button>
+    </form>
+</div>
+
+<%- include('../partials/footer') %>

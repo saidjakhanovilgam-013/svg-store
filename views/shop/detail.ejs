@@ -1,0 +1,124 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+  
+  <!-- Back to Catalog -->
+  <a href="/shop" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-indigo-400 font-medium mb-8 group transition-colors">
+    <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> Katalogga qaytish
+  </a>
+
+  <!-- Product Container -->
+  <div class="glass-box rounded-3xl p-8 border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-10 bg-[#0f172a]/80 backdrop-blur-md relative overflow-hidden">
+    
+    <!-- Left: Preview & Interactive BG Changer -->
+    <div class="lg:col-span-5 flex flex-col items-center gap-6">
+      
+      <!-- Interactive SVG Card Frame -->
+      <div id="svgPreviewCard" class="w-full aspect-square rounded-2xl p-8 flex items-center justify-center border border-white/5 bg-slate-950/40 relative overflow-hidden select-none transition-colors duration-300" style="background-image: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 80%);">
+        
+        <!-- Standard Transparent Pattern Backdrops -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #808080 1px, transparent 1px); background-size: 16px 16px;"></div>
+
+        <img id="productSvg" src="<%= product.preview_svg_path %>" alt="<%= product.title %>" class="max-h-full max-w-full object-contain filter invert-0 drop-shadow-lg transition-transform duration-500 hover:scale-105" onerror="this.src='https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/shapes.svg'">
+      </div>
+
+      <!-- Theme Tester Interface -->
+      <div class="text-center">
+        <p class="text-xs font-semibold text-slate-400 mb-2.5">Fon rangini sinab ko'ring:</p>
+        <div class="flex items-center justify-center gap-3">
+          <button onclick="changeBg('dark')" title="To'q fon" class="w-6 h-6 rounded-full bg-slate-950 border border-white/20 active:scale-95 transition-transform"></button>
+          <button onclick="changeBg('light')" title="Och fon" class="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 active:scale-95 transition-transform"></button>
+          <button onclick="changeBg('glass')" title="Grid fon" class="w-6 h-6 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center active:scale-95 transition-transform" style="background-image: linear-gradient(45deg, #475569 25%, transparent 25%), linear-gradient(-45deg, #475569 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #475569 75%), linear-gradient(-45deg, transparent 75%, #475569 75%); background-size: 8px 8px;"></button>
+          <button onclick="changeBg('brand')" title="Neon fon" class="w-6 h-6 rounded-full bg-indigo-600 border border-indigo-400/50 active:scale-95 transition-transform"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Product Details & Purchase Options -->
+    <div class="lg:col-span-7 flex flex-col justify-between py-2">
+      
+      <!-- Meta details -->
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 mb-4">
+          <i class="fa-solid fa-shapes mr-1.5"></i> Vektor & Ikonka
+        </span>
+
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2"><%= product.title %></h1>
+        <p class="text-sm text-slate-400 mb-6">Dizayner: <span class="text-slate-200 font-bold"><%= product.designer_name || 'Ilhomjon S' %></span></p>
+        
+        <hr class="border-white/10 mb-6">
+
+        <!-- Description -->
+        <div class="space-y-4 mb-8">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mahsulot tavsifi</h4>
+          <p class="text-slate-300 text-sm leading-relaxed"><%= product.description || 'Sizning loyihalaringiz va vizual ko\'rinishingiz uchun eng sara, yuqori sifatli SVG va ZIP formatidagi fayllar to\'plami.' %></p>
+        </div>
+
+        <!-- Specifications -->
+        <div class="space-y-3 mb-8 text-sm">
+          <div class="flex items-center gap-3 text-slate-300">
+            <i class="fa-solid fa-check text-emerald-400"></i> Formati: <span class="font-bold text-white ml-1">SVG / ZIP</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-300">
+            <i class="fa-solid fa-check text-emerald-400"></i> Litsenziya: <span class="font-medium text-slate-200 ml-1">Tijorat maqsadida foydalanish mumkin</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-300">
+            <i class="fa-solid fa-eye text-indigo-400"></i> Ko'rilgan: <span class="font-bold text-slate-200 ml-1"><%= product.views_count || 0 %> marta</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing & Actions -->
+      <div class="space-y-5">
+        <div class="flex flex-col gap-1">
+          <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Bir martalik narx</span>
+          <div class="text-3xl font-black text-emerald-400">
+            <%= Number(product.price).toLocaleString('uz-UZ') %> UZS
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+          <form action="/cart/add/<%= product.id %>" method="POST" class="flex-grow">
+            <button type="submit" class="w-full py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500 text-white font-extrabold rounded-2xl shadow-xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 text-base">
+              <i class="fa-solid fa-cart-shopping"></i> Savatga qo'shish
+            </button>
+          </form>
+
+          <a href="/shop" class="px-6 py-4 bg-slate-800/80 border border-white/5 hover:bg-slate-700 text-slate-300 font-bold rounded-2xl text-center transition-colors">
+            Ko'proq ko'rish
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Simple Background Changer for the preview card
+  function changeBg(theme) {
+    const card = document.getElementById('svgPreviewCard');
+    const svg = document.getElementById('productSvg');
+    
+    if (theme === 'dark') {
+      card.style.background = '#020617';
+      card.style.border = '1px solid rgba(255,255,255,0.05)';
+      svg.className = 'max-h-full max-w-full object-contain filter invert-0 drop-shadow-lg';
+    } else if (theme === 'light') {
+      card.style.background = '#f8fafc';
+      card.style.border = '1px solid rgba(0,0,0,0.1)';
+      svg.className = 'max-h-full max-w-full object-contain filter invert-0 drop-shadow-md';
+    } else if (theme === 'glass') {
+      card.style.background = '#1e293b';
+      card.style.border = '1px solid rgba(255,255,255,0.08)';
+      svg.className = 'max-h-full max-w-full object-contain filter invert-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]';
+    } else if (theme === 'brand') {
+      card.style.background = 'radial-gradient(circle, #312e81 0%, #030712 100%)';
+      card.style.border = '1px solid rgba(99,102,241,0.3)';
+      svg.className = 'max-h-full max-w-full object-contain filter invert drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]'; // can apply white glow in brand bg
+    }
+  }
+</script>
+
+<%- include('../partials/footer') %>

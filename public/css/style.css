@@ -1,0 +1,206 @@
+/* ==========================================================================
+   SVG STORE - Premium Cyberpunk Glassmorphism Theme (2026)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-dark: #0b0f19;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --accent-purple: #a855f7;
+  --accent-glow: rgba(99, 102, 241, 0.35);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Animations & Effects */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.glow-bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: pulseGlow 8s infinite alternate;
+}
+
+/* Glassmorphism Cards */
+.glass-box, .glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-box:hover, .glass-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -15px var(--accent-glow);
+  transform: translateY(-4px);
+}
+
+/* Modern Gradient Buttons */
+.btn-modern {
+  background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+  color: #ffffff;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+}
+
+.btn-modern:hover {
+  box-shadow: 0 0 25px var(--accent-glow);
+  transform: scale(1.03);
+  color: #ffffff;
+}
+
+/* SVG Preview Box */
+.svg-preview-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.svg-preview-box img,
+.svg-preview-box svg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.glass-box:hover .svg-preview-box img,
+.glass-box:hover .svg-preview-box svg {
+  transform: scale(1.08);
+}
+
+/* Text Truncate Helper */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* ==========================================================================
+   INTERAKTIV VA QIMIRLAYDIGAN IKONKA ANIMATSIYALARI (MICRO-INTERACTIONS)
+   ========================================================================== */
+
+/* 1. Uzluksiz sekin aylanuvchi ikonka (Logo va dekoratsiyalar uchun) */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+
+/* 2. Pulsatsiya va miltillash (Sehrli va chaqmoq ikonkalar uchun) */
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.4)); }
+  50% { transform: scale(1.25); filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.9)); }
+}
+
+.animate-icon-pulse {
+  display: inline-block;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* 3. Sakrash va tebranish effekti (Tugmalar va Savat uchun) */
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.hover-bounce:hover i {
+  animation: bounceSoft 0.4s ease infinite alternate;
+}
+
+/* 4. Sichqoncha kelganda 360 daraja burilish (Hover Spin) */
+.hover-spin i {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-spin:hover i {
+  transform: rotate(360deg) scale(1.2);
+}
+
+/* 5. Kartochka va tugmalardagi ikonkalar uchun yorqin yoritish (Glow effect) */
+.glass-box:hover i {
+  color: #a855f7 !important;
+  transition: color 0.3s ease;
+}
+/* Real va Yoritilgan SVG Prevyu Stili */
+.preview-svg-container {
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-svg-container img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  /* Qora SVG larni oppoq va neon yorug'likka o'tkazish */
+  filter: invert(1) drop-shadow(0 0 12px rgba(168, 85, 247, 0.8));
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glass-box:hover .preview-svg-container img {
+  transform: scale(1.25) rotate(5deg);
+  filter: invert(1) drop-shadow(0 0 20px rgba(99, 102, 241, 1));
+}

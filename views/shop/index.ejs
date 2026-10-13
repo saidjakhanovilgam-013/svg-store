@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+
+<div class="relative overflow-hidden py-20 px-6">
+  <!-- Glowing background Orqa fon yorug'ligi -->
+  <div class="glow-bg w-96 h-96 bg-indigo-600/30 -top-20 -left-20"></div>
+  <div class="glow-bg w-96 h-96 bg-purple-600/30 top-40 right-0"></div>
+
+  <div class="max-w-5xl mx-auto text-center relative z-10">
+    
+    <!-- Badge -->
+    <!-- YANGI KOD: -->
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-semibold mb-6 backdrop-blur-md">
+  <i class="fa-solid fa-bolt text-amber-400 animate-icon-pulse"></i> SVG Marketplacenining Yangi Avlodi
+</div>
+
+    <!-- Main Title -->
+    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+      Vektor San'atini <br>
+      <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+        Jonlantiring & Yuklang
+      </span>
+    </h1>
+
+    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      Dizaynerlar uchun eksklyuziv SVG vektorlar, animatsiyali ikonkalar va yuqori sifatli raqamli illyustratsiyalar bozori.
+    </p>
+
+    <!-- Search Bar -->
+    <form action="/shop" method="GET" class="max-w-2xl mx-auto flex items-center bg-slate-900/80 border border-slate-700/60 rounded-2xl p-2 shadow-2xl focus-within:border-indigo-500 transition-all backdrop-blur-md">
+      <i class="fa-solid fa-magnifying-glass text-slate-400 ml-4 text-lg"></i>
+      <input type="text" name="search" placeholder="Vektorlar, ikonkalar yoki loyihalarni qidirish..." class="w-full bg-transparent border-none outline-none px-4 text-slate-100 placeholder-slate-500">
+      <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/30">
+        Qidirish
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Products Grid -->
+<section class="max-w-7xl mx-auto px-6 pb-24 relative z-10">
+  <div class="flex items-center justify-between mb-8">
+    <!-- YANGI KOD: -->
+<h2 class="text-2xl font-bold flex items-center gap-3">
+  <i class="fa-solid fa-wand-magic-sparkles text-indigo-400 animate-icon-pulse"></i> Sarahlangan Vektorlar
+</h2>
+    <a href="/shop" class="text-sm font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+      Barchasini ko'rish <i class="fa-solid fa-arrow-right"></i>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <% if (typeof products !== 'undefined' && products.length > 0) { %>
+      <% products.forEach(product => { %>
+        <div class="glass-box rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 group">
+          
+          <div class="preview-svg-container">
+  <a href="/shop/product/<%= product.id %>" class="w-full h-full flex items-center justify-center p-4">
+    <img src="<%= product.preview_svg_path %>" alt="<%= product.title %>" onerror="this.src='https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/shapes.svg'">
+  </a>
+</div>
+
+          <div class="mt-4">
+            <h3 class="font-bold text-lg text-slate-100 group-hover:text-indigo-400 transition-colors line-clamp-1"><%= product.title %></h3>
+            <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+              <i class="fa-solid fa-circle-user text-slate-500"></i> <%= product.designer_name %>
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+            <span class="text-lg font-black text-emerald-400">
+  <%= Number(product.price).toLocaleString('uz-UZ') %> UZS
+</span>
+            <a href="/shop/product/<%= product.id %>" class="px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white rounded-xl text-sm font-semibold transition-all">
+              Batafsil
+            </a>
+          </div>
+
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-span-full glass-box rounded-2xl p-12 text-center my-6">
+        <div class="w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl text-slate-400 animate-float">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-200">Hozircha faol SVG fayllar yo'q</h3>
+        <p class="text-slate-400 text-sm mt-1">Dizayner paneli orqali birinchi SVG faylingizni yuklang!</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

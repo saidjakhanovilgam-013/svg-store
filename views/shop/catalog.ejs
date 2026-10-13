@@ -1,0 +1,86 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+  <h1 class="text-3xl font-extrabold text-white mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-compass text-indigo-400"></i> SVG Katalogi
+  </h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    
+    <!-- Sidebar / Filtrlar -->
+    <aside class="glass-box rounded-2xl p-6 h-fit border border-white/10">
+      <h2 class="text-lg font-bold text-slate-200 mb-4 pb-2 border-b border-white/10 flex items-center gap-2">
+        <i class="fa-solid fa-filter text-indigo-400"></i> Filtrlar
+      </h2>
+
+      <form action="/shop" method="GET" class="space-y-5">
+        <div>
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Kategoriyalar</label>
+          <select name="category" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-indigo-500">
+            <option value="">Barchasi</option>
+            <% if (typeof categories !== 'undefined') { %>
+              <% categories.forEach(cat => { %>
+                <option value="<%= cat.id %>"><%= cat.name %></option>
+              <% }) %>
+            <% } %>
+          </select>
+        </div>
+
+        <div>
+          <!-- ESKI: <label ...>Narx oraligi ($)</label> -->
+<label class="block text-sm font-semibold text-slate-300 mb-2">Narx oralig'i (UZS)</label>
+          <div class="grid grid-cols-2 gap-3">
+            <input type="number" name="min_price" placeholder="Min" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm">
+            <input type="number" name="max_price" placeholder="Max" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/30">
+          Saralash
+        </button>
+      </form>
+    </aside>
+
+    <!-- Products List -->
+    <main class="lg:col-span-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <% if (typeof products !== 'undefined' && products.length > 0) { %>
+          <% products.forEach(product => { %>
+            <div class="glass-box rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 group">
+              <div class="preview-svg-container">
+  <a href="/shop/product/<%= product.id %>" class="w-full h-full flex items-center justify-center p-4">
+    <img src="<%= product.preview_svg_path %>" alt="<%= product.title %>" onerror="this.src='https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/shapes.svg'">
+  </a>
+</div>
+
+              <div class="mt-4">
+                <h3 class="font-bold text-base text-slate-100 group-hover:text-indigo-400 transition-colors line-clamp-1"><%= product.title %></h3>
+                <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-user text-slate-500"></i> <%= product.designer_name %>
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between mt-5 pt-3 border-t border-white/5">
+                <span class="text-base font-black text-emerald-400">
+  <%= Number(product.price).toLocaleString('uz-UZ') %> UZS
+</span>
+                <a href="/shop/product/<%= product.id %>" class="px-3.5 py-1.5 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white rounded-xl text-xs font-semibold transition-all">
+                  Batafsil
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-span-full glass-box rounded-2xl p-12 text-center">
+            <i class="fa-solid fa-folder-open text-4xl text-slate-500 mb-3"></i>
+            <h3 class="text-lg font-bold text-slate-200">SVG fayllar topilmadi</h3>
+            <p class="text-slate-400 text-sm mt-1">Ushbu filtr bo'yicha hech qanday SVG fayl mavjud emas.</p>
+          </div>
+        <% } %>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

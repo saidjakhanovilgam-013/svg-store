@@ -1,0 +1,33 @@
+<%- include('../partials/header') %>
+
+<h2>Sizning savatchangiz</h2>
+
+<% if (typeof cartItems !== 'undefined' && cartItems.length > 0) { %>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid #ccc; text-align: left;">
+                <th>Mahsulot</th>
+                <th>Narxi</th>
+                <th>Amal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% cartItems.forEach(item => { %>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 1rem 0;"><%= item.title %></td>
+                    <td>$<%= item.price %></td>
+                    <td><button onclick="removeFromCart('<%= item.id %>')" class="btn btn-sm" style="background: #ef4444; color: white;">O'chirish</button></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 2rem; text-align: right;">
+        <h3>Jami: $<%= totalPrice %></h3>
+        <a href="/cart/checkout" class="btn btn-primary">To'lovga o'tish</a>
+    </div>
+<% } else { %>
+    <p>Savatchangiz bo'sh.</p>
+<% } %>
+
+<%- include('../partials/footer') %>

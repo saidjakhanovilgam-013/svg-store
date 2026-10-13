@@ -1,0 +1,190 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+  
+  <!-- Sarlavha -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-3xl font-extrabold text-white flex items-center gap-3">
+        <i class="fa-solid fa-chart-pie text-purple-400"></i> Dizayner Analitika Paneli
+      </h1>
+      <p class="text-slate-400 text-sm mt-1">SVG mahsulotlaringiz statistikasi va sotuvlar tahlili</p>
+    </div>
+    <button onclick="document.getElementById('uploadModal').classList.remove('hidden')" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center gap-2">
+      <i class="fa-solid fa-cloud-arrow-up"></i> Yangi SVG Yuklash
+    </button>
+  </div>
+
+  <!-- Stat-Kartochkalar (Analitika) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    
+    <!-- 1. Umumiy Ko'rishlar -->
+    <div class="glass-box rounded-2xl p-5 border border-white/10 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ko'rishlar Soni</span>
+        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <i class="fa-solid fa-eye"></i>
+        </div>
+      </div>
+      <div class="text-2xl font-black text-white"><%= totalViews.toLocaleString('uz-UZ') %></div>
+      <span class="text-[11px] text-emerald-400 flex items-center gap-1 mt-2">
+        <i class="fa-solid fa-arrow-trend-up"></i> Barcha mahsulotlar bo'yicha
+      </span>
+    </div>
+
+    <!-- 2. Jami Sotuvlar -->
+    <div class="glass-box rounded-2xl p-5 border border-white/10 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Yuklab Olishlar</span>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <i class="fa-solid fa-download"></i>
+        </div>
+      </div>
+      <div class="text-2xl font-black text-white"><%= totalSales.toLocaleString('uz-UZ') %> ta</div>
+      <span class="text-[11px] text-slate-400 mt-2 block">Sotilgan SVG fayllar</span>
+    </div>
+
+    <!-- 3. Umumiy Daromad -->
+    <div class="glass-box rounded-2xl p-5 border border-white/10 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sof Daromad</span>
+        <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+      <div class="text-2xl font-black text-emerald-400"><%= totalEarnings.toLocaleString('uz-UZ') %> UZS</div>
+      <span class="text-[11px] text-purple-300 mt-2 block">Hamyoningizdagi mablag'</span>
+    </div>
+
+    <!-- 4. Mahsulotlar Soni -->
+    <div class="glass-box rounded-2xl p-5 border border-white/10 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Mahsulotlar</span>
+        <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+      </div>
+      <div class="text-2xl font-black text-white"><%= products.length %> ta</div>
+      <span class="text-[11px] text-slate-400 mt-2 block">Katalogdagi dizaynlaringiz</span>
+    </div>
+
+  </div>
+
+  <!-- Yuklangan Mahsulotlar Jadvali -->
+  <div class="glass-box rounded-3xl p-6 border border-white/10">
+    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+      <i class="fa-solid fa-list-check text-indigo-400"></i> Mening Vektorlarim
+    </h3>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm text-slate-300">
+        <thead class="text-xs text-slate-400 uppercase bg-slate-900/60 rounded-xl">
+          <tr>
+            <th class="p-4">Dizayn</th>
+            <th class="p-4">Narxi</th>
+            <th class="p-4">Ko'rishlar</th>
+            <th class="p-4">Sotuvlar</th>
+            <th class="p-4">Holati</th>
+            <th class="p-4 text-right">Sana</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          <% if (products && products.length > 0) { %>
+            <% products.forEach(item => { %>
+              <tr class="hover:bg-slate-900/40 transition-colors">
+                <td class="p-4 font-semibold text-white flex items-center gap-3">
+                  <div class="w-10 h-10 bg-slate-800 rounded-lg p-1.5 flex items-center justify-center">
+                    <img src="<%= item.preview_svg_path %>" class="max-h-full max-w-full filter invert">
+                  </div>
+                  <%= item.title %>
+                </td>
+                <td class="p-4 font-bold text-emerald-400"><%= Number(item.price).toLocaleString('uz-UZ') %> UZS</td>
+                <td class="p-4 font-medium text-slate-200"><i class="fa-solid fa-eye text-indigo-400 mr-1.5"></i> <%= item.views_count || 0 %></td>
+                <td class="p-4 font-medium text-slate-200"><i class="fa-solid fa-download text-emerald-400 mr-1.5"></i> <%= item.sales_count || 0 %></td>
+                <td class="p-4">
+                  <span class="px-2.5 py-1 rounded-full text-xs font-bold border 
+                    <%= item.status === 'approved' ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' : (item.status === 'pending' ? 'border-amber-500/30 bg-amber-500/10 text-amber-400' : 'border-red-500/30 bg-red-500/10 text-red-400') %>">
+                    <%= item.status %>
+                  </span>
+                </td>
+                <td class="p-4 text-right text-xs text-slate-400"><%= new Date(item.created_at).toLocaleDateString('uz-UZ') %></td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="text-center py-8 text-slate-400">
+                Siz hali SVG fayllar yuklamagansiz. "Yangi SVG Yuklash" tugmasini bosing!
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Yangi SVG Yuklash Modali -->
+<div id="uploadModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+  <div class="glass-box rounded-3xl max-w-xl w-full p-6 border border-white/10 relative max-h-[90vh] overflow-y-auto">
+    
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-cloud-arrow-up text-purple-400"></i> Yangi SVG Yuklash
+      </h3>
+      <button onclick="document.getElementById('uploadModal').classList.add('hidden')" class="text-slate-400 hover:text-white transition-colors">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <form action="/designer/upload" method="POST" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Dizayn Nomi</label>
+        <input type="text" name="title" required placeholder="Masalan: Cyberpunk Neon Icons" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Kategoriya</label>
+          <select name="category_id" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+            <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+              <% categories.forEach(cat => { %>
+                <option value="<%= cat.id %>"><%= cat.name %></option>
+              <% }) %>
+            <% } %>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Narxi (UZS)</label>
+          <input type="number" name="price" required placeholder="15000" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Prevyu uchun SVG fayl (.svg)</label>
+        <input type="file" name="preview_svg" accept=".svg" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2 text-slate-300 text-xs focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Asosiy ZIP arxiv fayli (.zip)</label>
+        <input type="file" name="file_zip" accept=".zip,.rar" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2 text-slate-300 text-xs focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Tavsif (Tavsif bering)</label>
+        <textarea name="description" rows="3" placeholder="Mahsulot haqida ma'lumot..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-purple-500"></textarea>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-4">
+        <button type="button" onclick="document.getElementById('uploadModal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">Bekor qilish</button>
+        <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-purple-500/20">
+          Yuklash va Moderatsiyaga Yuborish
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

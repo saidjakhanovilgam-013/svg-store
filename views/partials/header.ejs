@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'SVG Store Marketplace' %></title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#0b0f19] text-slate-100 font-['Outfit',sans-serif] min-h-screen flex flex-col justify-between">
+
+  <!-- Dynamic Glass Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#0b0f19]/70 border-b border-white/10 px-6 py-4 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 text-2xl font-extrabold tracking-tight group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-spin-slow">
+          <i class="fa-solid fa-shapes text-white text-lg"></i>
+        </div>
+        <span class="bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">SVG Store</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-6 font-medium text-sm">
+        <a href="/shop" class="hover-bounce text-slate-300 hover:text-indigo-400 transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-compass"></i> Katalog
+        </a>
+        <a href="/cart" class="hover-bounce relative text-slate-300 hover:text-indigo-400 transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-cart-shopping"></i> Savat
+          <% if (typeof cartCount !== 'undefined' && cartCount > 0) { %>
+            <span class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded-full font-bold animate-pulse"><%= cartCount %></span>
+          <% } %>
+        </a>
+
+        <% if (typeof user !== 'undefined' && user) { %>
+          <!-- Kabinet (Barcha tizimga kirganlar uchun) -->
+          <a href="/profile" class="text-slate-300 hover:text-indigo-400 font-semibold flex items-center gap-2 transition-colors">
+            <i class="fa-solid fa-circle-user text-indigo-400"></i> Kabinet
+          </a>
+
+          <% if (user.role === 'admin') { %>
+            <a href="/admin/dashboard" class="text-amber-400 hover:text-amber-300 flex items-center gap-2 font-semibold">
+              <i class="fa-solid fa-user-shield"></i> Admin Panel
+            </a>
+          <% } else if (user.role === 'designer') { %>
+            <a href="/designer/dashboard" class="text-purple-400 hover:text-purple-300 flex items-center gap-2 font-semibold">
+              <i class="fa-solid fa-pen-nib"></i> Dizayner
+            </a>
+          <% } %>
+
+          <a href="/auth/logout" class="px-4 py-2 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">
+            Chiqish
+          </a>
+        <% } else { %>
+          <a href="/auth/login" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-right-to-bracket mr-1"></i> Kirish
+          </a>
+        <% } %>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="flex-grow">

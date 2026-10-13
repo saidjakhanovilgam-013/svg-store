@@ -1,0 +1,74 @@
+<%- include('../partials/header') %>
+
+<div style="max-width: 800px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 12px; border: 1px solid #e5e7eb;">
+    <h2>Buyurtmani rasmiylashtirish (Checkout)</h2>
+
+    <% if (typeof cartItems !== 'undefined' && cartItems.length > 0) { %>
+        <div style="display: flex; gap: 2rem; margin-top: 1.5rem;" class="checkout-wrapper">
+            <!-- Chap tomon: Buyurtma qisqacha mazmuni va litsenziya -->
+            <div style="flex: 1.2;">
+                <h3> Buyurtma tarkibi</h3>
+                <div style="border: 1px solid #f3f4f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; background: #fafafa;">
+                    <% cartItems.forEach(item => { %>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px dashed #e5e7eb;">
+                            <div>
+                                <strong><%= item.title %></strong><br>
+                                <small style="color: #6b7280;">Muallif: <%= item.designer_name %></small>
+                            </div>
+                            <span style="font-weight: 600;">$<%= item.price %></span>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <h3>Litsenziya turi</h3>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; margin-bottom: 0.5rem;">
+                        <input type="radio" name="license" value="standard" checked style="margin-top: 0.2rem;">
+                        <div>
+                            <strong>Standart litsenziya</strong>
+                            <p style="margin: 0; font-size: 0.85rem; color: #6b7280;">Shaxsiy va kichik tijoriy loyihalar uchun (shablonda qayta sotish taqiqlanadi).</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- O'ng tomon: To'lov usuli va yakuniy summa -->
+            <div style="flex: 0.8; background: #f9fafb; padding: 1.5rem; border-radius: 8px; border: 1px solid #e5e7eb; height: fit-content;">
+                <h3>To'lov usuli</h3>
+                
+                <form action="/cart/process-payment" method="POST">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="payment_provider" value="payme" checked> 
+                            <strong>Payme</strong>
+                        </label>
+                        <label style="display: block; margin-bottom: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="payment_provider" value="click"> 
+                            <strong>Click</strong>
+                        </label>
+                        <label style="display: block; margin-bottom: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="payment_provider" value="stripe"> 
+                            <strong>Stripe (Visa / Mastercard)</strong>
+                        </label>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 1rem 0;">
+
+                    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem;">
+                        <span>Jami to'lov:</span>
+                        <span>$<%= totalPrice %></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem;">
+                        To'lovni amalga oshirish
+                    </button>
+                </form>
+            </div>
+        </div>
+    <% } else { %>
+        <p>Savatchangiz bo'sh. To'lovni amalga oshirish uchun mahsulot qo'shing.</p>
+        <a href="/shop" class="btn btn-primary" style="margin-top: 1rem;">Katalogga qaytish</a>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>

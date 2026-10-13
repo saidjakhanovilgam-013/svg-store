@@ -1,0 +1,154 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Profil Kartochkasi -->
+    <aside class="glass-box rounded-3xl p-6 text-center h-fit border border-white/10 relative overflow-hidden">
+      <div class="w-24 h-24 rounded-full mx-auto mb-4 p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl shadow-indigo-500/30">
+        <img src="<%= user.avatar_url %>" alt="Avatar" class="w-full h-full rounded-full object-cover bg-slate-900">
+      </div>
+      <h2 class="text-xl font-bold text-white"><%= user.name %></h2>
+      <p class="text-xs text-slate-400 mb-3"><%= user.email %></p>
+      
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border 
+        <%= user.role === 'admin' ? 'border-amber-500/30 bg-amber-500/10 text-amber-400' : (user.role === 'designer' ? 'border-purple-500/30 bg-purple-500/10 text-purple-400' : 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400') %>">
+        <i class="fa-solid fa-shield-halved mr-1"></i> <%= user.role %>
+      </span>
+
+      <!-- Sotuvchiga o'tish ariza bloki -->
+      <% if (user.role === 'user' || user.role === 'buyer') { %>
+        <div class="pt-6 border-t border-white/10 mt-2">
+          <% if (typeof designerRequest !== 'undefined' && designerRequest && designerRequest.status === 'pending') { %>
+            <div class="p-3 bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs rounded-xl font-semibold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-clock animate-pulse text-amber-400"></i> Sotuvchilik arizangiz ko'rib chiqilmoqda...
+            </div>
+          <% } else { %>
+            <h3 class="text-sm font-bold text-slate-200 mb-1">SVG Sotmoqchimisiz?</h3>
+            <p class="text-xs text-slate-400 mb-4">Dizaynlarizni sotib daromad olishni boshlang.</p>
+            <button onclick="document.getElementById('designerModal').classList.remove('hidden')" class="w-full py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-purple-500/20 transition-all hover:scale-105 active:scale-95">
+              <i class="fa-solid fa-pen-nib mr-1"></i> Sotuvchi bo'lish
+            </button>
+          <% } %>
+        </div>
+      <% } else if (user.role === 'designer') { %>
+        <div class="pt-6 border-t border-white/10 mt-2">
+          <a href="/designer/dashboard" class="w-full inline-block py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl text-xs shadow-lg shadow-purple-500/20 hover:scale-105 transition-all">
+            <i class="fa-solid fa-chart-line mr-1"></i> Dizayner Paneliga O'tish
+          </a>
+        </div>
+      <% } %>
+    </aside>
+
+    <!-- Sozlamalar va Xaridlar -->
+    <main class="lg:col-span-2 space-y-8">
+      
+      <!-- Ma'lumotlarni tahrirlash -->
+      <section class="glass-box rounded-3xl p-6 border border-white/10">
+        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-indigo-400"></i> Profil Sozlamalari
+        </h3>
+
+        <form action="/profile/update" method="POST" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ism-sharif</label>
+              <input type="text" name="name" value="<%= user.name %>" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Telefon raqam</label>
+              <input type="text" name="phone" value="<%= user.phone || '' %>" placeholder="+998 90 123 45 67" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Bank Kartasi (To'lov va tushumlar uchun)</label>
+            <input type="text" name="card_number" value="<%= user.card_number || '' %>" placeholder="8600 •••• •••• ••••" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Avatar URL (Rasm)</label>
+            <input type="text" name="avatar_url" value="<%= user.avatar_url || '' %>" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">O'zingiz haqingizda (Bio)</label>
+            <textarea name="bio" rows="3" placeholder="Ixtisosligingiz yoki qisqacha tavsif..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500"><%= user.bio || '' %></textarea>
+          </div>
+
+          <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/30">
+            Saqlash
+          </button>
+        </form>
+      </section>
+
+      <!-- Xaridlar tarixi -->
+      <section class="glass-box rounded-3xl p-6 border border-white/10">
+        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-bag-shopping text-emerald-400"></i> Mening Xaridlarim
+        </h3>
+
+        <div class="space-y-4">
+          <% if (typeof purchases !== 'undefined' && purchases.length > 0) { %>
+            <% purchases.forEach(item => { %>
+              <div class="flex items-center justify-between p-4 bg-slate-900/50 rounded-2xl border border-white/5">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-slate-800 rounded-xl p-2 flex items-center justify-center">
+                    <img src="<%= item.preview_svg_path %>" alt="<%= item.title %>" class="max-h-full max-w-full filter invert">
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-100 text-sm"><%= item.title %></h4>
+                    <span class="text-xs text-slate-400"><%= new Date(item.created_at).toLocaleDateString('uz-UZ') %></span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="block font-bold text-emerald-400 text-sm"><%= Number(item.price).toLocaleString('uz-UZ') %> UZS</span>
+                  <a href="/shop/product/<%= item.id %>" class="text-xs text-indigo-400 hover:underline">Faylni yuklash</a>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="text-center py-8 text-slate-400 text-sm">
+              <i class="fa-solid fa-box-open text-3xl mb-2 text-slate-500 block"></i>
+              Sizda hali sotib olingan SVG fayllar yo'q.
+            </div>
+          <% } %>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+</div>
+
+<!-- Sotuvchi Bo'lish Modali -->
+<div id="designerModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div class="glass-box rounded-3xl max-w-md w-full p-6 border border-white/10 relative">
+    <h3 class="text-xl font-bold text-white mb-2">Dizaynerlikka Ariza</h3>
+    <p class="text-xs text-slate-400 mb-6">Ariza ko'rib chiqilgach, sotuvchi paneli ochiladi.</p>
+
+    <form action="/profile/apply-designer" method="POST" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Portfeli havolasi (Behance, Dribbble va h.k.)</label>
+        <input type="url" name="portfolio_url" required placeholder="https://behance.net/username" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Tajribangiz</label>
+        <select name="experience_level" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
+          <option value="Junior">Boshlang'ich (1 yildan kam)</option>
+          <option value="Middle">O'rta (1-3 yil)</option>
+          <option value="Senior">Professional (3+ yil)</option>
+        </select>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-4">
+        <button type="button" onclick="document.getElementById('designerModal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">Bekor qilish</button>
+        <button type="submit" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-xl transition-all">Yuborish</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
