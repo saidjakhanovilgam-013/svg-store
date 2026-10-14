@@ -13,8 +13,8 @@ const pool = new Pool({
   max: 20, // Bir vaqtning o'zida maksimal ulanishlar soni
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000, // Vercel uchun ulanish vaqtini biroz uzaytirdik
-  // Vercel serverlarida SSL ulanishni majburiy qilish
-  ssl: isProduction ? { rejectUnauthorized: false } : false
+  // Masofaviy (Neon kabi) bazalarda yoki productionda SSL ulanishni majburiy qilish
+  ssl: (isProduction || (process.env.DB_HOST && process.env.DB_HOST !== 'localhost')) ? { rejectUnauthorized: false } : false
 });
 
 // Bazaga ulanishni tekshirish

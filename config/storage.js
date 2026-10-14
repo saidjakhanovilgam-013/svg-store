@@ -3,8 +3,12 @@ const fs = require('fs');
 
 // Local xotira uchun papkalar mavjudligini tekshirish va yaratish
 const ensureDirectoryExists = (dirPath) => {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
+  try {
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+  } catch (err) {
+    console.warn(`⚠️ Papka yaratilmadi (Vercel kabi read-only tizim): ${err.message}`);
   }
 };
 

@@ -8,8 +8,8 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'svg_store',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD,
-  password: String(process.env.DB_PASSWORD || ''), // String ko'rinishiga o'tkazish
+  password: String(process.env.DB_PASSWORD || ''),
+  ssl: process.env.DB_HOST && process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : false
 });
 
 async function runMigration() {
