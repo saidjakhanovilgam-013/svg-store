@@ -1,6 +1,9 @@
+const path = require('path');
+const fs = require('fs');
 const productModel = require('../models/productModel');
 const categoryModel = require('../models/categoryModel');
 const orderModel = require('../models/orderModel');
+const storageConfig = require('../config/storage');
 
 module.exports = {
   // Dizayner paneli
@@ -53,11 +56,41 @@ module.exports = {
   uploadProduct: async (req, res) => {
     try {
       const { title, category_id, price, description } = req.body;
-      const previewFile = req.files['preview_svg'][0];
-      const zipFile = req.files['file_zip'][0];
+      const previewFile = req.files && req.files['preview_svg'] ? req.files['preview_svg'][0] : null;
+      const zipFile = req.files && req.files['file_zip'] ? req.files['file_zip'][0] : null;
 
-      const preview_svg_path = '/uploads/previews/' + previewFile.filename;
-      const file_zip_path = '/uploads/files/' + zipFile.filename;
+      if (!previewFile || !zipFile) {
+        return res.status(400).send("Ikkala fayl (SVG prevyu va ZIP arxiv) ham yuklanishi shart!");
+      }
+
+      let preview_svg_path = '';
+      let file_zip_path = '';
+
+      if (storageConfig.isSupabaseConfigured()) {
+        preview_svg_path = await storageConfig.uploadToSupabase(
+          previewFile.buffer,
+          previewFile.originalname,
+          'previews',
+          previewFile.mimetype || 'image/svg+xml'
+        );
+        file_zip_path = await storageConfig.uploadToSupabase(
+          zipFile.buffer,
+          zipFile.originalname,
+          'files',
+          zipFile.mimetype || 'application/zip'
+        );
+      } else {
+        // Local zaxira (faqat lokal dev rejimda)
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const previewName = 'preview-' + uniqueSuffix + path.extname(previewFile.originalname);
+        const zipName = 'file-' + uniqueSuffix + path.extname(zipFile.originalname);
+
+        fs.writeFileSync(path.join(storageConfig.local.previewsDir, previewName), previewFile.buffer);
+        fs.writeFileSync(path.join(storageConfig.local.filesDir, zipName), zipFile.buffer);
+
+        preview_svg_path = '/uploads/previews/' + previewName;
+        file_zip_path = '/uploads/files/' + zipName;
+      }
 
       await productModel.create({
         designer_id: req.user.id,
@@ -71,8 +104,8 @@ module.exports = {
 
       res.redirect('/designer/dashboard');
     } catch (err) {
-      console.error(err);
-      res.status(500).send("Fayl yuklashda xatolik yuz berdi!");
+      console.error('Fayl yuklashda xatolik:', err);
+      res.status(500).send("Fayl yuklashda xatolik yuz berdi: " + err.message);
     }
   },
 

@@ -1,24 +1,8 @@
 const multer = require('multer');
 const path = require('path');
 
-// Fayllarni saqlash joyi va nomlanishi
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.fieldname === 'preview_svg') {
-      cb(null, path.join(__dirname, '../public/uploads/previews'));
-    } else if (file.fieldname === 'file_zip') {
-      cb(null, path.join(__dirname, '../public/uploads/files'));
-    } else {
-      cb(new Error('Noma\'lum fayl maydoni'), false);
-    }
-  },
-  filename: (req, file, cb) => {
-    // Unikal fayl nomi: TIMESTAMP-ORIGINALNAME
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-  }
-});
+// Fayllarni xotirada (Buffer) ushlash (Serverless va Cloud xotira uchun ideal)
+const storage = multer.memoryStorage();
 
 // Fayl formatlarini filtrlash va xavfsizlik
 const fileFilter = (req, file, cb) => {
