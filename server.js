@@ -10,6 +10,7 @@ require('./config/passport');
 require('./config/storage');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // 1. View Engine (EJS) va Public papka sozlamalari
 app.set('view engine', 'ejs');
