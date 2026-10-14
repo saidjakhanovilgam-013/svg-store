@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const customOrderController = require('../controllers/customOrderController');
 const { isAuthenticated } = require('../middlewares/authMiddleware');
-const { isDesigner } = require('../middlewares/roleMiddleware');
+const { isBuyer, isDesigner } = require('../middlewares/roleMiddleware');
 const upload = require('../middlewares/uploadMiddleware');
 
 // Barcha amallar uchun tizimga kirgan bo'lish shart
@@ -13,7 +13,7 @@ router.get('/new/:designerId', customOrderController.getCreatePage);
 router.post('/create', upload.single('reference_file'), customOrderController.createOrder);
 
 // Mijozning buyurtmalari
-router.get('/my-orders', customOrderController.getMyOrders);
+router.get('/my-orders', isBuyer, customOrderController.getMyOrders);
 
 // Dizaynerga kelib tushgan buyurtmalar
 router.get('/designer-orders', isDesigner, customOrderController.getDesignerOrders);

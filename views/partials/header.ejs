@@ -41,10 +41,12 @@
         </a>
 
         <% if (typeof user !== 'undefined' && user) { %>
-          <!-- Zakazlarim -->
-          <a href="/custom-orders/my-orders" class="text-slate-300 hover:text-emerald-400 font-semibold flex items-center gap-1.5 transition-colors">
-            <i class="fa-solid fa-briefcase text-emerald-400"></i> Zakazlarim
-          </a>
+          <% if (user.role === 'buyer') { %>
+            <!-- Zakazlarim -->
+            <a href="/custom-orders/my-orders" class="text-slate-300 hover:text-emerald-400 font-semibold flex items-center gap-1.5 transition-colors">
+              <i class="fa-solid fa-briefcase text-emerald-400"></i> Zakazlarim
+            </a>
+          <% } %>
 
           <!-- Kabinet (Barcha tizimga kirganlar uchun) -->
           <a href="/profile" class="text-slate-300 hover:text-indigo-400 font-semibold flex items-center gap-2 transition-colors">
