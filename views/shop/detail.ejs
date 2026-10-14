@@ -43,8 +43,12 @@
           <i class="fa-solid fa-shapes mr-1.5"></i> Vektor & Ikonka
         </span>
 
-        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2"><%= product.title %></h1>
-        <p class="text-sm text-slate-400 mb-6">Dizayner: <span class="text-slate-200 font-bold"><%= product.designer_name || 'Ilhomjon S' %></span></p>
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-6">
+          <p class="text-sm text-slate-400">Dizayner: <span class="text-slate-200 font-bold"><%= product.designer_name || 'Ilhomjon S' %></span></p>
+          <a href="/custom-orders/new/<%= product.designer_id %>" class="px-3.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 text-xs font-bold inline-flex items-center gap-1.5 transition-all hover:scale-105">
+            <i class="fa-solid fa-pen-nib"></i> Shaxsiy buyurtma berish
+          </a>
+        </div>
         
         <hr class="border-white/10 mb-6">
 
@@ -92,6 +96,17 @@
 
           <a href="/shop" class="px-6 py-4 bg-slate-800/80 border border-white/5 hover:bg-slate-700 text-slate-300 font-bold rounded-2xl text-center transition-colors">
             Ko'proq ko'rish
+          </a>
+        </div>
+
+        <!-- Shaxsiy buyurtma banneri -->
+        <div class="mt-4 p-4 rounded-2xl bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border border-purple-500/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div>
+            <span class="font-bold text-white block mb-0.5">Maxsus dizayn yoki prezentatsiya kerakmi?</span>
+            <span class="text-slate-400">Prezentatsiya, Figma yoki yangi illyustratsiya uchun ushbu dizaynerga to'g'ridan-to'g'ri buyurtma bering.</span>
+          </div>
+          <a href="/custom-orders/new/<%= product.designer_id %>" class="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-xl text-xs whitespace-nowrap transition-all shadow-md shadow-purple-600/30">
+            <i class="fa-solid fa-pen-nib mr-1"></i> Zakaz berish
           </a>
         </div>
       </div>

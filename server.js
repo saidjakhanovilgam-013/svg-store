@@ -60,6 +60,7 @@ app.use('/cart', require('./routes/cartRoutes'));
 app.use('/designer', require('./routes/designerRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/profile', profileRoutes);
+app.use('/custom-orders', require('./routes/customOrderRoutes'));
 
 // 7. Global Xatoliklarni ushlash middleware (Error handler)
 app.use((err, req, res, next) => {

@@ -24,6 +24,9 @@ const fileFilter = (req, file, cb) => {
     } else {
       cb(new Error('Asl fayl faqat .ZIP arxiv formatida bo\'lishi shart!'), false);
     }
+  } else if (file.fieldname === 'reference_file' || file.fieldname === 'deliverable_file') {
+    // Buyurtma brifi va topshiriladigan fayllar uchun ruxsat
+    cb(null, true);
   } else {
     cb(null, false);
   }

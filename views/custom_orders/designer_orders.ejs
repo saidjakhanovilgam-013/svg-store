@@ -1,0 +1,130 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-3xl font-extrabold text-white flex items-center gap-3">
+        <i class="fa-solid fa-inbox text-purple-400"></i> Kelib tushgan buyurtmalar
+      </h1>
+      <p class="text-xs text-slate-400 mt-1">Mijozlar tomonidan sizga yuborilgan shaxsiy prezentatsiya va dizayn takliflari</p>
+    </div>
+
+    <a href="/designer/dashboard" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition-all flex items-center gap-2 border border-white/5">
+      <i class="fa-solid fa-arrow-left"></i> Dizayner Paneliga qaytish
+    </a>
+  </div>
+
+  <!-- Orders List -->
+  <div class="glass-box rounded-3xl p-6 border border-white/10 bg-[#0f172a]/90">
+    <% if (orders && orders.length > 0) { %>
+      <div class="divide-y divide-white/5 space-y-4">
+        <% orders.forEach(order => { %>
+          <div class="pt-4 first:pt-0 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 hover:bg-slate-900/40 p-5 rounded-2xl transition-colors">
+
+            <!-- Left Info -->
+            <div class="flex items-start gap-4 flex-grow">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl flex-shrink-0 mt-1">
+                <% if (order.service_type === 'presentation') { %>
+                  <i class="fa-solid fa-file-powerpoint"></i>
+                <% } else if (order.service_type === 'figma_uiux') { %>
+                  <i class="fa-brands fa-figma"></i>
+                <% } else { %>
+                  <i class="fa-solid fa-paintbrush"></i>
+                <% } %>
+              </div>
+
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-bold text-slate-400">#<%= order.id %></span>
+                  <h3 class="text-base font-bold text-white"><%= order.title %></h3>
+
+                  <!-- Status Badge -->
+                  <% if (order.status === 'pending') { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                      Yangi taklif (Kutilmoqda)
+                    </span>
+                  <% } else if (order.status === 'accepted' && !order.is_paid) { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
+                      Qabul qilingan (Mijoz to'lashi kutilmoqda)
+                    </span>
+                  <% } else if (order.status === 'in_progress') { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/10 text-purple-300 border border-purple-500/30 animate-pulse">
+                      To'langan / Ish jarayonida
+                    </span>
+                  <% } else if (order.status === 'submitted') { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-500/10 text-teal-300 border border-teal-500/30">
+                      Topshirilgan (Mijoz ko'rib chiqmoqda)
+                    </span>
+                  <% } else if (order.status === 'completed') { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                      Yakunlangan (Mablag' balansga o'tgan)
+                    </span>
+                  <% } else if (order.status === 'rejected') { %>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/10 text-rose-300 border border-rose-500/30">
+                      Rad etilgan
+                    </span>
+                  <% } %>
+                </div>
+
+                <p class="text-xs text-slate-400 flex items-center gap-2">
+                  <span>Mijoz: <strong class="text-slate-200"><%= order.client_name %></strong></span>
+                  <span>•</span>
+                  <span>Muddat: <strong class="text-slate-300"><%= order.deadline_days %> kun</strong></span>
+                  <span>•</span>
+                  <span><%= new Date(order.created_at).toLocaleDateString('uz-UZ') %></span>
+                </p>
+
+                <p class="text-xs text-slate-300 line-clamp-2 mt-2 pt-1 border-t border-white/5">
+                  <%= order.description %>
+                </p>
+              </div>
+            </div>
+
+            <!-- Financials & Actions -->
+            <div class="flex flex-col sm:flex-row lg:flex-col items-end gap-3 flex-shrink-0">
+              <div class="text-right">
+                <span class="text-[11px] text-slate-400 block">Sizga tushadigan sof daromad (85%):</span>
+                <span class="text-lg font-black text-emerald-400"><%= Number(order.designer_share).toLocaleString('uz-UZ') %> UZS</span>
+                <span class="text-[10px] text-slate-500 block">Jami byudjet: <%= Number(order.budget).toLocaleString('uz-UZ') %> UZS</span>
+              </div>
+
+              <!-- Quick Action Buttons -->
+              <div class="flex items-center gap-2">
+                <% if (order.status === 'pending') { %>
+                  <form action="/custom-orders/<%= order.id %>/accept" method="POST" class="inline">
+                    <button type="submit" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20 flex items-center gap-1.5">
+                      <i class="fa-solid fa-check"></i> Qabul qilish
+                    </button>
+                  </form>
+                  <form action="/custom-orders/<%= order.id %>/reject" method="POST" class="inline">
+                    <button type="submit" class="px-3.5 py-2 bg-rose-600/80 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1.5">
+                      <i class="fa-solid fa-xmark"></i> Rad etish
+                    </button>
+                  </form>
+                <% } %>
+
+                <a href="/custom-orders/detail/<%= order.id %>" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl text-xs transition-all flex items-center gap-1.5 border border-white/5">
+                  Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="text-center py-16">
+        <div class="w-16 h-16 rounded-full bg-slate-800/80 text-slate-500 flex items-center justify-center mx-auto mb-4 text-2xl">
+          <i class="fa-solid fa-inbox"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-1">Ayni paytda yangi buyurtmalar yo'q</h3>
+        <p class="text-xs text-slate-400">Yangi buyurtmalar kelib tushganda shu yerda ko'rinadi va siz ularni qabul qila olasiz.</p>
+      </div>
+    <% } %>
+  </div>
+
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,135 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-4xl mx-auto px-6 py-12">
+
+  <!-- Back Link -->
+  <a href="/shop" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-indigo-400 font-medium mb-8 transition-colors">
+    <i class="fa-solid fa-arrow-left"></i> Do'konga qaytish
+  </a>
+
+  <!-- Header Card -->
+  <div class="glass-box rounded-3xl p-8 border border-white/10 bg-[#0f172a]/90 backdrop-blur-md mb-8">
+    <div class="flex flex-col sm:flex-row items-center gap-6">
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 p-1 flex-shrink-0 shadow-xl shadow-purple-500/20">
+        <img src="<%= designer.avatar_url || 'https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/user.svg' %>" alt="<%= designer.name %>" class="w-full h-full rounded-2xl object-cover bg-slate-900">
+      </div>
+      <div class="text-center sm:text-left flex-grow">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/10 border border-purple-500/30 text-purple-300 mb-2">
+          <i class="fa-solid fa-pen-nib mr-1"></i> Dizaynerga Shaxsiy Buyurtma
+        </span>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white"><%= designer.name %> ga buyurtma berish</h1>
+        <p class="text-xs text-slate-400 mt-1">Prezentatsiya, Figma, illyustratsiya yoki boshqa dizayn xizmati bo'yicha shaxsiy taklif yuboring.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <form action="/custom-orders/create" method="POST" enctype="multipart/form-data" class="glass-box rounded-3xl p-8 border border-white/10 bg-[#0f172a]/90 space-y-6">
+    <input type="hidden" name="designer_id" value="<%= designer.id %>">
+
+    <!-- 1. Xizmat turi -->
+    <div>
+      <label class="block text-sm font-bold text-white mb-3">Qanday xizmat turiga buyurtma bermoqchisiz?</label>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <label class="relative flex flex-col p-4 rounded-2xl border border-white/10 bg-slate-900/60 cursor-pointer hover:border-purple-500/50 transition-all">
+          <input type="radio" name="service_type" value="presentation" checked class="peer sr-only">
+          <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2 peer-checked:bg-purple-600 peer-checked:text-white transition-colors">
+            <i class="fa-solid fa-file-powerpoint"></i>
+          </div>
+          <span class="font-bold text-sm text-slate-200">Prezentatsiya</span>
+          <span class="text-xs text-slate-400 mt-1">Figma, PPTX, Keynote</span>
+          <div class="absolute inset-0 rounded-2xl border-2 border-purple-500 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+        </label>
+
+        <label class="relative flex flex-col p-4 rounded-2xl border border-white/10 bg-slate-900/60 cursor-pointer hover:border-purple-500/50 transition-all">
+          <input type="radio" name="service_type" value="figma_uiux" class="peer sr-only">
+          <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-2 peer-checked:bg-indigo-600 peer-checked:text-white transition-colors">
+            <i class="fa-brands fa-figma"></i>
+          </div>
+          <span class="font-bold text-sm text-slate-200">Figma UI/UX</span>
+          <span class="text-xs text-slate-400 mt-1">Veb-sayt yoki ilova dizayni</span>
+          <div class="absolute inset-0 rounded-2xl border-2 border-indigo-500 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+        </label>
+
+        <label class="relative flex flex-col p-4 rounded-2xl border border-white/10 bg-slate-900/60 cursor-pointer hover:border-purple-500/50 transition-all">
+          <input type="radio" name="service_type" value="illustration" class="peer sr-only">
+          <div class="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center mb-2 peer-checked:bg-pink-600 peer-checked:text-white transition-colors">
+            <i class="fa-solid fa-paintbrush"></i>
+          </div>
+          <span class="font-bold text-sm text-slate-200">Planshet Illyustratsiya</span>
+          <span class="text-xs text-slate-400 mt-1">Vektor yoki raqamli art</span>
+          <div class="absolute inset-0 rounded-2xl border-2 border-pink-500 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- 2. Loyiha nomi -->
+    <div>
+      <label class="block text-xs font-semibold text-slate-300 mb-2">Loyiha sarlavhasi (Qisqacha mazmuni):</label>
+      <input type="text" name="title" required placeholder="Masalan: FinTech startapi uchun 12 slaydli prezentatsiya" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+    </div>
+
+    <!-- 3. Tavsif va matnlar -->
+    <div>
+      <label class="block text-xs font-semibold text-slate-300 mb-2">Texnik topshiriq va talablar (Brif):</label>
+      <textarea name="description" required rows="4" placeholder="Dizaynda qanday matnlar, ranglar yoki uslub bo'lishi kerak? To'liq yozing..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-purple-500"></textarea>
+    </div>
+
+    <!-- 4. Format va Muddat -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-2">Kutilayotgan format:</label>
+        <select name="format" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+          <option value="Figma link">Figma havola (Figma link)</option>
+          <option value="PowerPoint / PDF (.pptx, .pdf)">PowerPoint / PDF (.pptx, .pdf)</option>
+          <option value="Vektor SVG / AI (.svg, .ai)">Vektor SVG / AI (.svg, .ai)</option>
+          <option value="ZIP to'plam (.zip)">ZIP to'plam (.zip)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-2">Ijro muddati (kunlarda):</label>
+        <select name="deadline_days" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-purple-500">
+          <option value="1">1 kun (Juda shoshilinch)</option>
+          <option value="3" selected>3 kun (Standart)</option>
+          <option value="5">5 kun</option>
+          <option value="7">7 kun (1 hafta)</option>
+          <option value="14">14 kun (2 hafta)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 5. Byudjet (Taklif qilingan narx) -->
+    <div>
+      <label class="block text-xs font-semibold text-slate-300 mb-2">Taklif qilayotgan byudjetingiz (UZS):</label>
+      <div class="relative">
+        <input type="number" name="budget" required min="50000" step="10000" placeholder="500000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-purple-500 pr-16 font-bold">
+        <span class="absolute right-4 top-3 text-xs font-bold text-slate-400">UZS</span>
+      </div>
+      <p class="text-[11px] text-slate-400 mt-1">Dizayner taklifingizni qabul qilishi yoki rad etishi mumkin.</p>
+    </div>
+
+    <!-- 6. Namuna fayl (ixtiyoriy) -->
+    <div>
+      <label class="block text-xs font-semibold text-slate-300 mb-2">Qo'shimcha fayl yoki namuna (ixtiyoriy):</label>
+      <input type="file" name="reference_file" class="w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-500">
+    </div>
+
+    <!-- To'lov holati -->
+    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-start gap-3">
+      <i class="fa-solid fa-shield-halved text-base text-emerald-400 mt-0.5"></i>
+      <div>
+        <p class="font-bold">To'lov sinov rejimida:</p>
+        <p class="text-slate-300 mt-0.5">Hozircha haqiqiy to'lov provayderi ulanmagan. Buyurtma sahifasidagi to'lov amali faqat ish jarayonini sinaydi; real pul yechilmaydi va eskrou himoyasi mavjud emas.</p>
+      </div>
+    </div>
+
+    <!-- Yuborish tugmasi -->
+    <button type="submit" class="w-full py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-extrabold rounded-2xl shadow-xl shadow-purple-500/25 transition-all hover:scale-[1.01] active:scale-95 text-base flex items-center justify-center gap-2">
+      <i class="fa-solid fa-paper-plane"></i> Dizaynerga Taklifni Yuborish
+    </button>
+  </form>
+
+</div>
+
+<%- include('../partials/footer') %>

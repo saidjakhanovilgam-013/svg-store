@@ -18,6 +18,7 @@ CREATE TABLE users (
     phone VARCHAR(30),
     bio TEXT,
     card_number VARCHAR(30),
+    balance DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -81,3 +82,27 @@ CREATE TABLE IF NOT EXISTS "session" (
     CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
 );
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+
+-- 8. Maxsus buyurtmalar (Custom freelance orders) jadvali
+CREATE TABLE IF NOT EXISTS custom_orders (
+    id SERIAL PRIMARY KEY,
+    client_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    designer_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    service_type VARCHAR(100) NOT NULL, -- 'presentation', 'figma', 'illustration', 'logo', 'other'
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    requirements TEXT,
+    budget DECIMAL(12, 2) NOT NULL,
+    deadline_days INT NOT NULL DEFAULT 3,
+    format VARCHAR(100) DEFAULT 'Figma / SVG',
+    reference_file_url VARCHAR(500),
+    status VARCHAR(30) DEFAULT 'pending', -- 'pending', 'accepted', 'rejected', 'in_progress', 'submitted', 'completed', 'cancelled'
+    submission_file_url VARCHAR(500),
+    submission_notes TEXT,
+    counter_budget DECIMAL(12, 2),
+    designer_share DECIMAL(12, 2),
+    platform_fee DECIMAL(12, 2),
+    is_paid BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

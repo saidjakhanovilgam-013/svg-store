@@ -69,9 +69,13 @@ const storageConfig = {
   local: {
     previewsDir: path.join(__dirname, '../public/uploads/previews'),
     filesDir: path.join(__dirname, '../public/uploads/files'),
+    referencesDir: path.join(__dirname, '../public/uploads/references'),
+    deliverablesDir: path.join(__dirname, '../public/uploads/deliverables'),
     init: function() {
       ensureDirectoryExists(this.previewsDir);
       ensureDirectoryExists(this.filesDir);
+      ensureDirectoryExists(this.referencesDir);
+      ensureDirectoryExists(this.deliverablesDir);
     }
   }
 };
