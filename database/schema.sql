@@ -14,6 +14,20 @@ CREATE TABLE users (
     google_id VARCHAR(100),
     role VARCHAR(20) DEFAULT 'buyer', -- buyer, designer, admin
     is_approved_designer BOOLEAN DEFAULT FALSE,
+    avatar_url VARCHAR(255) DEFAULT 'https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/user.svg',
+    phone VARCHAR(30),
+    bio TEXT,
+    card_number VARCHAR(30),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2.1. Sotuvchilikka (dizaynerlikka) arizalar jadvali
+CREATE TABLE designer_requests (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    portfolio_url VARCHAR(255) NOT NULL,
+    experience_level VARCHAR(50) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending', -- pending, approved, rejected
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

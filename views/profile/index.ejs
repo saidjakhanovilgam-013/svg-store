@@ -103,8 +103,10 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <span class="block font-bold text-emerald-400 text-sm"><%= Number(item.price).toLocaleString('uz-UZ') %> UZS</span>
-                  <a href="/shop/product/<%= item.id %>" class="text-xs text-indigo-400 hover:underline">Faylni yuklash</a>
+                  <span class="block font-bold text-emerald-400 text-sm mb-1"><%= Number(item.price).toLocaleString('uz-UZ') %> UZS</span>
+                  <a href="/shop/download/<%= item.id %>" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all">
+                    <i class="fa-solid fa-download"></i> Yuklab olish
+                  </a>
                 </div>
               </div>
             <% }) %>

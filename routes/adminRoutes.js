@@ -21,6 +21,7 @@ router.post('/reject-product/:id', adminController.rejectProduct);
 // Dizaynerlik arizalari ro'yxati va tasdiqlash
 router.get('/requests', adminController.getDesignerRequests);
 router.post('/request/:id/approve', adminController.approveDesigner);
+router.post('/request/:id/reject', adminController.rejectDesigner);
 router.post('/approve-designer/:id', adminController.approveDesigner);
 
 module.exports = router;

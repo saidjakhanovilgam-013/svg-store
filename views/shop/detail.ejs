@@ -78,11 +78,17 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4 pt-2">
-          <form action="/cart/add/<%= product.id %>" method="POST" class="flex-grow">
-            <button type="submit" class="w-full py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500 text-white font-extrabold rounded-2xl shadow-xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 text-base">
-              <i class="fa-solid fa-cart-shopping"></i> Savatga qo'shish
-            </button>
-          </form>
+          <% if (typeof hasPurchased !== 'undefined' && hasPurchased) { %>
+            <a href="/shop/download/<%= product.id %>" class="flex-grow py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold rounded-2xl shadow-xl shadow-emerald-600/30 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 text-base">
+              <i class="fa-solid fa-cloud-arrow-down text-lg"></i> Yuklab olish (Sotib olingan)
+            </a>
+          <% } else { %>
+            <form action="/cart/add/<%= product.id %>" method="POST" class="flex-grow">
+              <button type="submit" class="w-full py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500 text-white font-extrabold rounded-2xl shadow-xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 text-base">
+                <i class="fa-solid fa-cart-shopping"></i> Savatga qo'shish
+              </button>
+            </form>
+          <% } %>
 
           <a href="/shop" class="px-6 py-4 bg-slate-800/80 border border-white/5 hover:bg-slate-700 text-slate-300 font-bold rounded-2xl text-center transition-colors">
             Ko'proq ko'rish

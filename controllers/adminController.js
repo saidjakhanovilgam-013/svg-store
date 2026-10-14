@@ -86,5 +86,16 @@ module.exports = {
       console.error('Dizaynerni tasdiqlashda xatolik:', err);
       res.status(500).send("Server xatoligi");
     }
+  },
+
+  // Dizaynerlik arizasini rad etish
+  rejectDesigner: async (req, res) => {
+    try {
+      await userModel.rejectDesigner(req.params.id);
+      res.redirect('/admin/requests');
+    } catch (err) {
+      console.error('Arizani rad etishda xatolik:', err);
+      res.status(500).send("Server xatoligi");
+    }
   }
 };
