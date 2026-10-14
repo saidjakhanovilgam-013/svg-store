@@ -54,6 +54,13 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server ${PORT}-portda muvaffaqiyatli ishga tushdi: http://localhost:${PORT}`);
-});
+
+// Faqat server Vercel-dan tashqarida (oddiy serverda) ishlayotgandagina listen bo'lishi kerak
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+// Eng oxirida Express app obyektini tashqariga eksport qilib qo'yish shart (Vercel o'qib olishi uchun)
+module.exports = app;
