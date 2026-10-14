@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const pool = require('./config/db');
 const passport = require('passport');
 const profileRoutes = require('./routes/profileRoutes');
 require('dotenv').config();
@@ -21,12 +23,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 3. Express Session
+// 3. Express Session (PostgreSQL bazasida doimiy saqlash)
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(session({
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session',
+    createTableIfMissing: false
+  }),
   secret: process.env.SESSION_SECRET || 'secretkey_svgstore',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 kun
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 kun
+    secure: isProduction,
+    sameSite: 'lax'
+  }
 }));
 
 // 4. Passport middleware
