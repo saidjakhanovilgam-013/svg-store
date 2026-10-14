@@ -72,20 +72,25 @@
     <% if (pendingProducts && pendingProducts.length > 0) { %>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <% pendingProducts.forEach(prod => { %>
-          <div class="p-4 bg-slate-900/60 rounded-2xl border border-white/5 flex items-center justify-between">
+          <div class="p-4 bg-slate-900/60 rounded-2xl border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 bg-slate-800 rounded-xl p-2 flex items-center justify-center">
-                <img src="<%= prod.preview_svg_path %>" class="max-h-full max-w-full filter invert">
+                <img src="<%= prod.preview_svg_path %>" alt="<%= prod.title %>" class="max-h-full max-w-full filter invert">
               </div>
               <div>
                 <h4 class="font-bold text-white text-sm"><%= prod.title %></h4>
                 <span class="text-xs text-emerald-400 font-bold"><%= Number(prod.price).toLocaleString('uz-UZ') %> UZS</span>
               </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 self-end sm:self-auto">
               <form action="/admin/product/<%= prod.id %>/approve" method="POST">
-                <button title="Tasdiqlash" class="w-8 h-8 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-400 hover:text-white flex items-center justify-center transition-all">
+                <button type="submit" title="Tasdiqlash" aria-label="Tasdiqlash" class="w-9 h-9 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-400 hover:text-white flex items-center justify-center transition-all">
                   <i class="fa-solid fa-check"></i>
+                </button>
+              </form>
+              <form action="/admin/product/<%= prod.id %>/reject" method="POST">
+                <button type="submit" title="Rad etish" aria-label="Rad etish" class="w-9 h-9 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white flex items-center justify-center transition-all">
+                  <i class="fa-solid fa-xmark"></i>
                 </button>
               </form>
             </div>
