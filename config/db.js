@@ -12,7 +12,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   max: 20, // Bir vaqtning o'zida maksimal ulanishlar soni
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000, // Vercel uchun ulanish vaqtini biroz uzaytirdik
+  connectionTimeoutMillis: 10000, // Neon DB uyqudan uyg'onishi uchun yetarli vaqt
   // Masofaviy (Neon kabi) bazalarda yoki productionda SSL ulanishni majburiy qilish
   ssl: (isProduction || (process.env.DB_HOST && process.env.DB_HOST !== 'localhost')) ? { rejectUnauthorized: false } : false
 });
